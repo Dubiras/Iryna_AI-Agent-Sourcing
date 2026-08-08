@@ -176,7 +176,7 @@ def fetch_linkedin_profile(url: str) -> str:
     return "\n".join(parts) if parts else f"❌ Профіль не знайдено: {url}"
 
 
-# ---- Job Description (Excel Online) ----
+# ---- Job Description (Google Sheets) ----
 
 @mcp.tool()
 def save_job_description(
@@ -186,7 +186,7 @@ def save_job_description(
     department: Optional[str] = None,
     status: str = "Draft",
 ) -> dict:
-    """Save a generated Job Description to the Excel workbook (Job Descriptions sheet).
+    """Save a generated Job Description to the Google Sheet (Job Descriptions tab).
 
     Always call this after generating a JD if Iryna confirms she wants to save it.
     Generate the full JD content first, then call this tool to persist it.
@@ -211,17 +211,17 @@ def save_job_description(
 
 @mcp.tool()
 def list_job_descriptions(status: Optional[str] = None) -> list[dict]:
-    """List saved Job Descriptions from the Excel workbook.
+    """List saved Job Descriptions from the Google Sheet.
 
     Args:
       status: Filter by status — Draft / Ready / Published (optional)
 
-    Returns: list of rows from the Job Descriptions sheet
+    Returns: list of rows from the Job Descriptions tab
     """
     return _sheets.list_job_descriptions(status=status or "")
 
 
-# ---- Candidate tracker (Excel Online) ----
+# ---- Candidate tracker (Google Sheets) ----
 
 @mcp.tool()
 def track_candidate(
@@ -232,7 +232,7 @@ def track_candidate(
     source: str = "",
     comment: str = "",
 ) -> dict:
-    """Save a candidate to the Excel candidate tracker.
+    """Save a candidate to the Google Sheets candidate tracker.
 
     Call this when Iryna wants to log a candidate: after sourcing, screening,
     or any pipeline stage. Status values: New / Contacted / Screening /
@@ -254,7 +254,7 @@ def track_candidate(
     )
 
 
-# ---- Research articles (Excel Online) ----
+# ---- Research articles (Google Sheets) ----
 
 @mcp.tool()
 def save_research_article(
@@ -264,7 +264,7 @@ def save_research_article(
     topic: str = "",
     source: str = "",
 ) -> dict:
-    """Save a research article or resource to the Scout Research Excel workbook.
+    """Save a research article or resource to the Scout Research Google Sheet.
 
     Call after web_search when finding useful recruiting/HR resources.
 
@@ -282,7 +282,7 @@ def save_research_article(
     )
 
 
-# ---- Outlook Calendar ----
+# ---- Google Calendar ----
 
 @mcp.tool()
 def get_free_slots(
@@ -291,7 +291,7 @@ def get_free_slots(
     work_start_hour: int = 9,
     work_end_hour: int = 18,
 ) -> dict:
-    """Find free time slots in the Outlook Calendar for scheduling interviews.
+    """Find free time slots in Google Calendar for scheduling interviews.
 
     Call this when Iryna asks for free slots, available time, or wants to
     send interview invitation with specific times.
@@ -317,7 +317,7 @@ def get_free_slots(
 
 @mcp.tool()
 def get_upcoming_events(hours: int = 48) -> list[dict]:
-    """Get upcoming events from the Outlook Calendar.
+    """Get upcoming events from Google Calendar.
 
     Call this when Iryna asks about her schedule, upcoming interviews,
     or wants to see what's planned.
@@ -330,14 +330,14 @@ def get_upcoming_events(hours: int = 48) -> list[dict]:
     return _cal.get_upcoming_events(hours=hours)
 
 
-# ---- Outlook Mail ----
+# ---- Gmail ----
 
 @mcp.tool()
 def get_email_summary(
     hours: int = 24,
     max_emails: int = 40,
 ) -> list[dict]:
-    """Fetch recent emails from the Outlook inbox and return structured list.
+    """Fetch recent emails from Gmail INBOX and return structured list.
 
     Call this when Iryna asks about email, wants a summary, or runs /email.
     Always call this first, then analyse and summarise the results.
@@ -481,7 +481,7 @@ def find_candidates(
 ) -> dict:
     """Search for real LinkedIn candidates via Google X-Ray (Serper API).
 
-    Returns a list of LinkedIn profiles and saves them to the Excel candidate tracker.
+    Returns a list of LinkedIn profiles and saves them to Google Sheets tracker.
     Use this when Iryna asks to find candidates, do sourcing, or search LinkedIn.
 
     Args:
@@ -489,7 +489,7 @@ def find_candidates(
       location: location to filter by, e.g. "Ukraine", "Poland", "Remote"
       keywords: optional extra keywords to narrow search, e.g. ["iGaming", "affiliate"]
       max_results: max number of profiles to return (default 15, max 30)
-      save_to_sheet: save found candidates to the Excel candidate tracker (default True)
+      save_to_sheet: save found candidates to Google Sheets tracker (default True)
 
     Returns: {candidates: [...], saved: N, sheet_url: "..."}
     """

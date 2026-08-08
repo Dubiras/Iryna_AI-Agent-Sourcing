@@ -1,7 +1,9 @@
 fastmcp>=2.0
 psycopg[binary]==3.2.*
 requests==2.32.*
-msal==1.*
+google-auth==2.*
+google-auth-oauthlib==1.*
+google-api-python-client==2.*
 ddgs>=1.0
 html2text>=2020.1.8
 httpx>=0.27
